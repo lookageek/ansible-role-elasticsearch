@@ -29,7 +29,7 @@ Network host to listen for incoming connections on. By default we only listen on
 
 The port to listen for HTTP connections on.
 
-    elasticsearch_script_inline: true
+    elasticsearch_script_inline: "true"
 
 Whether to allow inline scripting against ElasticSearch. You should read the following link as there are possible security implications for enabling these options: [Enable Dynamic Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-security.html). Available options include: `true` and `false`.
 
