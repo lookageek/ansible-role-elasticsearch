@@ -17,6 +17,10 @@ The elasticstack debian repo version
 
 Specific elasticsearch version to install
 
+    elasticsearch_enabled_on_boot: yes
+
+Set this to `no` if you don't want elasticsearch to run on system startup.
+
     elasticsearch_network_host: localhost
 
 Network host to listen for incoming connections on. By default we only listen on the localhost interface. Change this to the IP address to listen on a specific interface, or `0.0.0.0` to listen on all interfaces.
