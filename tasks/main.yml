@@ -14,12 +14,12 @@
   systemd:
     name: elasticsearch
     state: started
-    enabled: {{ elasticsearch_enabled_on_boot }}
+    enabled: "{{ elasticsearch_enabled_on_boot }}"
     daemon_reload: yes
 
 - name: Make sure Elasticsearch is running before proceeding.
   wait_for:
-    host: {{ elasticsearch_network_host }}
-    port: {{ elasticsearch_http_port }}
+    host: "{{ elasticsearch_network_host }}"
+    port: "{{ elasticsearch_http_port }}"
     delay: 3
     timeout: 300
