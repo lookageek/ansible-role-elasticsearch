@@ -1,15 +1,21 @@
 # Ansible Role: Elasticsearch
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-elasticsearch.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-elasticsearch)
-
-An Ansible Role that installs Elasticsearch on RedHat/CentOS or Debian/Ubuntu.
+An Ansible Role that installs Elasticsearch on Debian/Ubuntu with systemd.
 
 ## Requirements
 
-Requires at least Java 7 (Java 8+ preferred). See [`geerlingguy.java`](https://github.com/geerlingguy/ansible-role-java#example-playbook-install-openjdk-8) role instructions for installing OpenJDK 8.
+Requires at least Java 7 (Java 8+ preferred). Install OpenJDK or Oracle JDK using any galaxy role.
 
 ## Role Variables
 Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+    elasticstack_deb_repo: "5.x"
+
+The elasticstack debian repo version
+
+    elasticsearch_version: "5.3.2"
+
+Specific elasticsearch version to install
 
     elasticsearch_network_host: localhost
 
@@ -20,20 +26,8 @@ Network host to listen for incoming connections on. By default we only listen on
 The port to listen for HTTP connections on.
 
     elasticsearch_script_inline: true
-    elasticsearch_script_indexed: true
 
-Whether to allow inline scripting against ElasticSearch. You should read the following link as there are possible security implications for enabling these options: [Enable Dynamic Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html#enable-dynamic-scripting). Available options include: `true`, `false`, and `sandbox`.
-
-## Dependencies
-
-  - geerlingguy.java
-
-## Example Playbook
-
-    - hosts: search
-      roles:
-        - geerlingguy.java
-        - geerlingguy.elasticsearch
+Whether to allow inline scripting against ElasticSearch. You should read the following link as there are possible security implications for enabling these options: [Enable Dynamic Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-security.html). Available options include: `true` and `false`.
 
 ## License
 
@@ -41,4 +35,4 @@ MIT / BSD
 
 ## Author Information
 
-This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+This role was created in 2017 by Jayanth Manklu cloning from [geerlingguy/ansible-role-elasticsearch](https://github.com/geerlingguy/ansible-role-elasticsearch).
