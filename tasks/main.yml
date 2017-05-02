@@ -10,6 +10,8 @@
     mode: 0750
   notify: restart elasticsearch
 
+- meta: flush_handlers
+
 - name: Ensure Elasticsearch is started and enabled on boot.
   systemd:
     name: elasticsearch
