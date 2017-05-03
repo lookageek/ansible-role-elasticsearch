@@ -33,6 +33,23 @@ The port to listen for HTTP connections on.
 
 Whether to allow inline scripting against ElasticSearch. You should read the following link as there are possible security implications for enabling these options: [Enable Dynamic Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-security.html). Available options include: `true` and `false`.
 
+    elasticsearch_custom_storage_enabled: false
+
+Whether indexes need to stored into a separate path, like an EBS volume.
+
+    elasticsearch_custom_storage_path: "/data/es-indexes"
+
+Path where indexes have to be stored, if `yes` for previous variable
+
+    elasticsearch_lock_heap: "false"
+
+Whether locking heap memory allocated on JVM before starting Elasticsearch
+
+    environment:
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+
+Set `ES_JAVA_OPTS` environment variable in the play before starting Elasticsearch to specify how much heap memory you need Elasticsearch to have. It should not be more than half of machine's total memory.
+
 ## License
 
 MIT / BSD

@@ -1,13 +1,23 @@
 ---
 - include: setup.yml
 
-- name: Configure Elasticsearch.
+- name: Configure elasticsearch.yml.
   template:
     src: elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
     owner: root
     group: elasticsearch
     mode: 0750
+  notify: restart elasticsearch
+
+- name: Create custom storage directory.
+  file:
+    path: "{{ elasticsearch_custom_storage_path }}"
+    state: directory
+    owner: root
+    group: elasticsearch
+    mode: 0770
+  when: elasticsearch_custom_storage_enabled
   notify: restart elasticsearch
 
 - meta: flush_handlers
