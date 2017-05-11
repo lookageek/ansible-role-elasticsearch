@@ -43,7 +43,7 @@ path.data: {{ elasticsearch_custom_storage_path }}
 #
 # Lock the memory on startup:
 #
-bootstrap.mlockall: {{ elasticsearch_lock_heap }}
+bootstrap.memory_lock: {{ elasticsearch_lock_heap }}
 #
 # Make sure that the `ES_HEAP_SIZE` environment variable is set to about half the memory
 # available on the system and that the owner of the process is allowed to use this limit.
