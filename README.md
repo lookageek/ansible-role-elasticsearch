@@ -59,7 +59,7 @@ If you are using elasticsearch for logstash, you may need to remove indexes olde
 
 Set the `machine_user` for making a cron job
 
-    elasticsearch_purge_logstash_indexes: true
+    elasticsearch_purge_logstash_indexes: false
     elasticsearch_purge_logstash_indexes_older_than: 15
 
 If you want to delete the indexes older than days mentioned, a cron job is created which runs once a day
