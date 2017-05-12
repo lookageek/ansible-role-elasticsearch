@@ -55,7 +55,7 @@ Set `ES_JAVA_OPTS` environment variable in the play before starting Elasticsearc
 
 If you are using elasticsearch for logstash, you may need to remove indexes older than some X days
 
-    machine_user: ubuntu
+    elasticsearch_user: ubuntu
 
 Set the `machine_user` for making a cron job
 
