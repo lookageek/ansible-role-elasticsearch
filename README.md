@@ -7,6 +7,7 @@ An Ansible Role that installs Elasticsearch on Debian/Ubuntu with systemd.
 Requires at least Java 7 (Java 8+ preferred). Install OpenJDK or Oracle JDK using any galaxy role.
 
 ## Role Variables
+
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
     elasticstack_deb_repo: "5.x"
@@ -49,6 +50,24 @@ Whether locking heap memory allocated on JVM before starting Elasticsearch
       ES_JAVA_OPTS: "-Xms2g -Xmx2g"
 
 Set `ES_JAVA_OPTS` environment variable in the play before starting Elasticsearch to specify how much heap memory you need Elasticsearch to have. It should not be more than half of machine's total memory.
+
+## Removing or Closing logstash indexes
+
+If you are using elasticsearch for logstash, you may need to remove indexes older than some X days
+
+    machine_user: ubuntu
+
+Set the `machine_user` for making a cron job
+
+    elasticsearch_purge_logstash_indexes: true
+    elasticsearch_purge_logstash_indexes_older_than: 15
+
+If you want to delete the indexes older than days mentioned, a cron job is created which runs once a day
+
+    elasticsearch_close_logstash_indexes: false
+    elasticsearch_close_logstash_indexes_older_than: 15
+
+If you want to keep the older data, and just remove it from being active, a cron job is created which runs once a day. [More info](https://www.elastic.co/guide/en/elasticsearch/guide/current/retiring-data.html)
 
 ## License
 

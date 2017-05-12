@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# {{ ansible_managed }}
+
+require 'date'
+require 'net/http'
+
+days_to_purge = {{ elasticsearch_purge_logstash_indexes_older_than }}
+purge_day     = Date.today - 1
+
+days_to_purge.times do
+   logstash_date_format = purge_day.strftime('%Y.%m.%d')
+   uri = URI("http://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/logstash-#{logstash_date_format}")
+   Net::HTTP.new(uri.host, uri.port).delete(uri.request_uri)
+
+   purge_day -= 1
+end

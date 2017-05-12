@@ -10,6 +10,51 @@
     mode: 0750
   notify: restart elasticsearch
 
+- name: Create folder to copy cron job scripts.
+  file:
+    path: /home/{{ machine_user }}/es-maintenance
+    state: directory
+    owner: "{{ machine_user }}"
+    group: "{{ machine_user }}"
+    mode: 0770
+  when: elasticsearch_purge_logstash_indexes or elasticsearch_close_logstash_indexes
+
+- name: Copy purge script for cron.
+  template:
+    src: logstash-index-purge.rb.j2
+    dest: /home/{{ machine_user }}/es-maintenance/logstash-index-purge.rb
+    owner: "{{ machine_user }}"
+    group: "{{ machine_user }}"
+    mode: 0770
+  when: elasticsearch_purge_logstash_indexes
+
+- name: Create cron job to purge logstash indexes.
+  cron:
+    name: purge logstash indexes
+    hour: "1"
+    user: "{{ machine_user }}"
+    job: "/bin/bash -l -c '/home/{{ machine_user }}/es-maintenance/logstash-index-purge.rb'"
+    cron_file: escron
+  when: elasticsearch_purge_logstash_indexes
+
+- name: Copy close script for cron.
+  template:
+    src: logstash-index-close.rb.j2
+    dest: /home/{{ machine_user }}/es-maintenance/logstash-index-close.rb
+    owner: "{{ machine_user }}"
+    group: "{{ machine_user }}"
+    mode: 0770
+  when: elasticsearch_close_logstash_indexes
+
+- name: Create cron job to close older logstash indexes.
+  cron:
+    name: close logstash indexes
+    hour: "1"
+    user: "{{ machine_user }}"
+    job: "/bin/bash -l -c '/home/{{ machine_user }}/es-maintenance/logstash-index-close.rb'"
+    cron_file: escron
+  when: elasticsearch_close_logstash_indexes
+
 - name: Create custom storage directory.
   file:
     path: "{{ elasticsearch_custom_storage_path }}"

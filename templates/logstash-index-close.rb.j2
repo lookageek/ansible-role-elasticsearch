@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# {{ ansible_managed }}
+
+require 'date'
+require 'net/http'
+
+days_to_close = {{ elasticsearch_close_logstash_indexes_older_than }}
+close_day     = Date.today - 1
+
+days_to_close.times do
+   logstash_date_format = close_day.strftime('%Y.%m.%d')
+   flush_uri = URI("http://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/logstash-#{logstash_date_format}/_flush")
+   close_uri = URI("http://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/logstash-#{logstash_date_format}/_close")
+   Net::HTTP.post_form(flush_uri, {})
+   Net::HTTP.post_form(close_uri, {})
+
+   close_day -= 1
+end
