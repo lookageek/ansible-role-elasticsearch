@@ -32,6 +32,7 @@
   cron:
     name: delete logstash indexes
     hour: "1"
+    user: "{{ elasticsearch_user }}"
     job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-delete.sh'"
   when: elasticsearch_delete_logstash_indexes
 
@@ -48,6 +49,7 @@
   cron:
     name: close logstash indexes
     hour: "1"
+    user: "{{ elasticsearch_user }}"
     job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.sh'"
   when: elasticsearch_close_logstash_indexes
 

@@ -57,7 +57,7 @@ If you are using elasticsearch for logstash, you may need to remove indexes olde
 
     elasticsearch_user: ubuntu
 
-Set the `machine_user` for making a cron job
+Set the `machine_user`, cron jobs are created on this user
 
     elasticsearch_delete_logstash_indexes: false
     elasticsearch_delete_logstash_indexes_older_than: 15
