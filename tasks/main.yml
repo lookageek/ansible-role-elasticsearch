@@ -17,42 +17,38 @@
     owner: "{{ elasticsearch_user }}"
     group: "{{ elasticsearch_user }}"
     mode: 0770
-  when: elasticsearch_purge_logstash_indexes or elasticsearch_close_logstash_indexes
+  when: elasticsearch_delete_logstash_indexes or elasticsearch_close_logstash_indexes
 
-- name: Copy purge script for cron.
+- name: Copy delete script for cron.
   template:
-    src: logstash-index-purge.rb.j2
-    dest: /home/{{ elasticsearch_user }}/es-maintenance/logstash-index-purge.rb
+    src: logstash-index-delete.sh.j2
+    dest: /home/{{ elasticsearch_user }}/es-maintenance/logstash-index-delete.sh
     owner: "{{ elasticsearch_user }}"
     group: "{{ elasticsearch_user }}"
     mode: 0770
-  when: elasticsearch_purge_logstash_indexes
+  when: elasticsearch_delete_logstash_indexes
 
-- name: Create cron job to purge logstash indexes.
+- name: Create cron job to delete logstash indexes.
   cron:
-    name: purge logstash indexes
+    name: delete logstash indexes
     hour: "1"
-    user: "{{ elasticsearch_user }}"
-    job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-purge.rb'"
-    cron_file: escron
-  when: elasticsearch_purge_logstash_indexes
+    job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-delete.sh'"
+  when: elasticsearch_delete_logstash_indexes
 
 - name: Copy close script for cron.
   template:
-    src: logstash-index-close.rb.j2
-    dest: /home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.rb
+    src: logstash-index-close.sh.j2
+    dest: /home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.sh
     owner: "{{ elasticsearch_user }}"
     group: "{{ elasticsearch_user }}"
     mode: 0770
   when: elasticsearch_close_logstash_indexes
 
-- name: Create cron job to close older logstash indexes.
+- name: Create cron job to close logstash indexes.
   cron:
     name: close logstash indexes
     hour: "1"
-    user: "{{ elasticsearch_user }}"
-    job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.rb'"
-    cron_file: escron
+    job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.sh'"
   when: elasticsearch_close_logstash_indexes
 
 - name: Create custom storage directory.

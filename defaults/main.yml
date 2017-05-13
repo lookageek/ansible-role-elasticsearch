@@ -14,8 +14,8 @@ elasticsearch_custom_storage_enabled: false
 elasticsearch_custom_storage_path: "/data/es-indexes"
 elasticsearch_lock_heap: "false"
 
-elasticsearch_purge_logstash_indexes: false
-elasticsearch_purge_logstash_indexes_older_than: 15
+elasticsearch_delete_logstash_indexes: false
+elasticsearch_delete_logstash_indexes_older_than: 15
 
 elasticsearch_close_logstash_indexes: false
 elasticsearch_close_logstash_indexes_older_than: 15
