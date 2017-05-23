@@ -69,6 +69,12 @@ If you want to delete the indexes older than days mentioned, a cron job is creat
 
 If you want to keep the older data, and just remove it from being active, a cron job is created which runs once a day. [More info](https://www.elastic.co/guide/en/elasticsearch/guide/current/retiring-data.html)
 
+    elasticsearch_log_level: info
+    elasticsearch_slow_search_log_level: info
+    elasticsearch_slow_index_log_level: info
+
+Three log events that can be set with different levels. Available levels `trace`, `debug`, `info`, `warn`, `error`, and `fatal`.
+
 ## License
 
 MIT / BSD
