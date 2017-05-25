@@ -1,11 +1,7 @@
 #!/bin/bash
-{{ ansible_managed }}
+# {{ ansible_managed }}
 
-days={{ elasticsearch_delete_logstash_indexes_older_than }}
+days=$(({{ elasticsearch_delete_logstash_indexes_older_than }}+1))
 
-while [ "$days" -gt 0 ]
-do
-  logstash_date_format=`date --date="-${days} day" +%Y.%m.%d`
-  curl -XDELETE "http://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/logstash-${logstash_date_format}" >/dev/null 2>&1
-  ((days--))
-done
+logstash_date_format=`date --date="-${days} day" +%Y.%m.%d`
+curl -XDELETE "http://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port }}/logstash-${logstash_date_format}" >/dev/null 2>&1
