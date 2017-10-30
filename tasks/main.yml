@@ -19,6 +19,15 @@
     mode: 0750
   notify: restart elasticsearch
 
+- name: Configure jvm.options.
+  template:
+    src: jvm.options.j2
+    dest: /etc/elasticsearch/jvm.options
+    owner: root
+    group: elasticsearch
+    mode: 0750
+  notify: restart elasticsearch
+
 - name: Create folder to copy cron job scripts.
   file:
     path: /home/{{ elasticsearch_user }}/es-maintenance
