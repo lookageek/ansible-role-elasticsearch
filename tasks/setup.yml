@@ -14,3 +14,16 @@
   apt:
     pkg: elasticsearch={{ elasticsearch_version }}
     state: present
+
+- name: Add Elasticsearch Curator repository.
+  apt_repository:
+    repo: "deb [arch=amd64] http://packages.elastic.co/curator/{{ elasticsearch_curator_deb_repo }}/debian stable main"
+    state: present
+    update_cache: yes
+  when: elasticsearch_add_curator
+
+- name: install Elasticsearch Curator.
+  apt:
+    pkg: elasticsearch-curator={{ elasticsearch_curator_version }}
+    state: present
+  when: elasticsearch_add_curator

@@ -96,3 +96,8 @@ http.port: {{ elasticsearch_http_port }}
 #
 # action.destructive_requires_name: true
 script.inline: {{ elasticsearch_script_inline }}
+
+# Limiting mapping explosion from dynamic mapping
+index.mapping.total_fields.limit: {{ elasticsearch_dynamic_mapping_field_limit }}
+index.mapping.depth.limit: {{ elasticsearch_dynamic_mapping_depth_limit }}
+index.mapping.nested_fields.limit: {{ elasticsearch_dynamic_mapping_nested_fields_limit }}

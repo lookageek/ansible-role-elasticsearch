@@ -28,49 +28,6 @@
     mode: 0750
   notify: restart elasticsearch
 
-- name: Create folder to copy cron job scripts.
-  file:
-    path: /home/{{ elasticsearch_user }}/es-maintenance
-    state: directory
-    owner: "{{ elasticsearch_user }}"
-    group: "{{ elasticsearch_user }}"
-    mode: 0770
-  when: elasticsearch_delete_logstash_indexes or elasticsearch_close_logstash_indexes
-
-- name: Copy delete script for cron.
-  template:
-    src: logstash-index-delete.sh.j2
-    dest: /home/{{ elasticsearch_user }}/es-maintenance/logstash-index-delete.sh
-    owner: "{{ elasticsearch_user }}"
-    group: "{{ elasticsearch_user }}"
-    mode: 0770
-  when: elasticsearch_delete_logstash_indexes
-
-- name: Create cron job to delete logstash indexes.
-  cron:
-    name: delete logstash indexes
-    hour: "1"
-    user: "{{ elasticsearch_user }}"
-    job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-delete.sh'"
-  when: elasticsearch_delete_logstash_indexes
-
-- name: Copy close script for cron.
-  template:
-    src: logstash-index-close.sh.j2
-    dest: /home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.sh
-    owner: "{{ elasticsearch_user }}"
-    group: "{{ elasticsearch_user }}"
-    mode: 0770
-  when: elasticsearch_close_logstash_indexes
-
-- name: Create cron job to close logstash indexes.
-  cron:
-    name: close logstash indexes
-    hour: "1"
-    user: "{{ elasticsearch_user }}"
-    job: "/bin/bash -l -c '/home/{{ elasticsearch_user }}/es-maintenance/logstash-index-close.sh'"
-  when: elasticsearch_close_logstash_indexes
-
 - name: Create custom storage directory.
   file:
     path: "{{ elasticsearch_custom_storage_path }}"
@@ -96,3 +53,42 @@
     port: "{{ elasticsearch_http_port }}"
     delay: 3
     timeout: 300
+
+- name: Create folder to keep Elasticsearch Curator Configuration.
+  file:
+    path: /home/{{ elasticsearch_user }}/es-curator
+    state: directory
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"
+    mode: 0770
+  when: elasticsearch_add_curator
+
+- name: Add Elasticsearch Curator Configuration.
+  template:
+    src: es-curator-config.yml.j2
+    dest: /home/{{ elasticsearch_user }}/es-curator/config.yml
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"
+    mode: 0770
+  when: elasticsearch_add_curator
+
+- name: Add Curator Actions for deleting old indexes from Elasticsearch.
+  template:
+    src: es-curator-delete-action-file.yml.j2
+    dest: /home/{{ elasticsearch_user }}/es-curator/delete-action-file.yml
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"
+    mode: 0770
+  when:
+    - elasticsearch_add_curator
+    - elasticsearch_delete_indexes
+
+- name: Create cron job to run Elasticsearch Curator.
+  cron:
+    name: Elasticsearch Curator
+    hour: "1"
+    user: "{{ elasticsearch_user }}"
+    job: "/bin/bash -l -c 'curator --config /home/{{ elasticsearch_user }}/es-curator/config.yml /home/{{ elasticsearch_user }}/es-curator/delete-action-file.yml'"
+  when:
+    - elasticsearch_add_curator
+    - elasticsearch_delete_indexes

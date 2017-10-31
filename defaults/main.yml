@@ -14,14 +14,19 @@ elasticsearch_custom_storage_enabled: false
 elasticsearch_custom_storage_path: "/data/es-indexes"
 elasticsearch_lock_heap: "false"
 
-elasticsearch_delete_logstash_indexes: false
-elasticsearch_delete_logstash_indexes_older_than: 15
+elasticsearch_add_curator: true
+elasticsearch_curator_deb_repo: "5"
+elasticsearch_curator_version: "5.2"
 
-elasticsearch_close_logstash_indexes: false
-elasticsearch_close_logstash_indexes_older_than: 15
+elasticsearch_delete_indexes: false
+elasticsearch_delete_indexes_older_than: 15
 
 elasticsearch_log_level: info
 elasticsearch_slow_search_log_level: info
 elasticsearch_slow_index_log_level: info
 
 elasticsearch_jvm_heap_size: 4g
+
+elasticsearch_dynamic_mapping_field_limit: 1000
+elasticsearch_dynamic_mapping_depth_limit: 20
+elasticsearch_dynamic_mapping_nested_fields_limit: 50

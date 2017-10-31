@@ -53,27 +53,36 @@ Set `ES_JAVA_OPTS` environment variable in the play before starting Elasticsearc
 
 ## Removing or Closing logstash indexes
 
-If you are using elasticsearch for logstash, you may need to remove indexes older than some X days
+If you are using elasticsearch for logstash, you may need to remove indexes older than some X days, we can use [Elasticsearch Curator](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.2/index.html) for this.
+
+    elasticsearch_add_curator: true
+    elasticsearch_curator_deb_repo: "5"
+    elasticsearch_curator_version: "5.2"
+
+Installs Elasticsearch Curator
 
     elasticsearch_user: ubuntu
+    elasticsearch_delete_indexes: false
+    elasticsearch_delete_indexes_older_than: 15
 
-Set the `machine_user`, cron jobs are created on this user
-
-    elasticsearch_delete_logstash_indexes: false
-    elasticsearch_delete_logstash_indexes_older_than: 15
-
-If you want to delete the indexes older than days mentioned, a cron job is created which runs once a day
-
-    elasticsearch_close_logstash_indexes: false
-    elasticsearch_close_logstash_indexes_older_than: 15
-
-If you want to keep the older data, and just remove it from being active, a cron job is created which runs once a day. [More info](https://www.elastic.co/guide/en/elasticsearch/guide/current/retiring-data.html)
+If you want to delete the indexes older than days mentioned, a cron job for `elasticsearch_user` is created which runs once a day
 
     elasticsearch_log_level: info
     elasticsearch_slow_search_log_level: info
     elasticsearch_slow_index_log_level: info
 
 Three log events that can be set with different levels. Available levels `trace`, `debug`, `info`, `warn`, `error`, and `fatal`.
+
+    elasticsearch_jvm_heap_size: 4g
+
+The JVM heap size configuration for elasticsearch. This should be ideally not more than half of the total memory of the system.
+
+    elasticsearch_dynamic_mapping_field_limit: 1000
+    elasticsearch_dynamic_mapping_depth_limit: 20
+    elasticsearch_dynamic_mapping_nested_fields_limit: 50
+
+When using elasticsearch with logstash, the mapping is dynamic unless manually a mapping is configured. To make things easy
+and limit mapped fields with blowing up the index tune these quantities for your liking. [More Info.](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)
 
 ## License
 
