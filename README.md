@@ -57,7 +57,7 @@ If you are using elasticsearch for logstash, you may need to remove indexes olde
 
     elasticsearch_add_curator: true
     elasticsearch_curator_deb_repo: "5"
-    elasticsearch_curator_version: "5.2"
+    elasticsearch_curator_version: "5.2.0"
 
 Installs Elasticsearch Curator
 
