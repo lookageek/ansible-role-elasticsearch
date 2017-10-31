@@ -8,7 +8,7 @@
 # copying it.
 actions:
   1:
-    action: delete_logstash_indices
+    action: delete_indices
     description: >-
       Delete indices older than {{ elasticsearch_delete_indexes_older_than }} days (based on index name), for logstash-
       prefixed indices. Ignore the error if the filter does not result in an
@@ -27,7 +27,7 @@ actions:
       unit: days
       unit_count: {{ elasticsearch_delete_indexes_older_than }}
   2:
-    action: delete_es_monitoring_indices
+    action: delete_indices
     description: >-
       Delete indices older than {{ elasticsearch_delete_indexes_older_than }} days (based on index name), for .monitoring-es-2-
       prefixed indices. Ignore the error if the filter does not result in an
@@ -46,7 +46,7 @@ actions:
       unit: days
       unit_count: {{ elasticsearch_delete_indexes_older_than }}
   3:
-    action: delete_logstash_monitoring_indices
+    action: delete_indices
     description: >-
       Delete indices older than {{ elasticsearch_delete_indexes_older_than }} days (based on index name), for .monitoring-logstash-2-
       prefixed indices. Ignore the error if the filter does not result in an
@@ -65,7 +65,7 @@ actions:
       unit: days
       unit_count: {{ elasticsearch_delete_indexes_older_than }}
   4:
-    action: delete_kibana_monitoring_indices
+    action: delete_indices
     description: >-
       Delete indices older than {{ elasticsearch_delete_indexes_older_than }} days (based on index name), for .monitoring-kibana-2-
       prefixed indices. Ignore the error if the filter does not result in an
