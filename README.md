@@ -77,13 +77,6 @@ Three log events that can be set with different levels. Available levels `trace`
 
 The JVM heap size configuration for elasticsearch. This should be ideally not more than half of the total memory of the system.
 
-    elasticsearch_dynamic_mapping_field_limit: 1000
-    elasticsearch_dynamic_mapping_depth_limit: 20
-    elasticsearch_dynamic_mapping_nested_fields_limit: 50
-
-When using elasticsearch with logstash, the mapping is dynamic unless manually a mapping is configured. To make things easy
-and limit mapped fields with blowing up the index tune these quantities for your liking. [More Info.](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)
-
 ## License
 
 MIT / BSD
