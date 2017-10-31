@@ -77,6 +77,13 @@ Three log events that can be set with different levels. Available levels `trace`
 
 The JVM heap size configuration for elasticsearch. This should be ideally not more than half of the total memory of the system.
 
+    elasticsearch_xpack_enabled: true
+    elasticsearch_xpack_monitoring_enabled: true
+    elasticsearch_xpack_watcher_enabled: false
+    elasticsearch_xpack_security_enabled: true
+
+All general X-Pack configuration required for when Elasticsearch is in log collection role.
+
 ## License
 
 MIT / BSD

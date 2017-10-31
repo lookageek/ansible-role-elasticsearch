@@ -26,3 +26,8 @@ elasticsearch_slow_search_log_level: info
 elasticsearch_slow_index_log_level: info
 
 elasticsearch_jvm_heap_size: 4g
+
+elasticsearch_xpack_enabled: true
+elasticsearch_xpack_monitoring_enabled: true
+elasticsearch_xpack_watcher_enabled: false
+elasticsearch_xpack_security_enabled: true

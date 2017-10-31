@@ -96,3 +96,18 @@ http.port: {{ elasticsearch_http_port }}
 #
 # action.destructive_requires_name: true
 script.inline: {{ elasticsearch_script_inline }}
+#
+{% if elasticsearch_xpack_enabled %}
+# X-Pack Settings
+xpack.ml.enabled: false
+xpack.monitoring.enabled: {{ elasticsearch_xpack_monitoring_enabled }}
+xpack.watcher.enabled: {{ elasticsearch_xpack_watcher_enabled }}
+xpack.security.enabled: {{ elasticsearch_xpack_security_enabled }}
+{% if elasticsearch_xpack_security_enabled %}
+xpack.security.authc:
+  anonymous:
+    username: anonymous_user
+    roles: superuser
+    authz_exception: true
+{% endif %}
+{% endif %}

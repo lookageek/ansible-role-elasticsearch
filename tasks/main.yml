@@ -38,6 +38,12 @@
   when: elasticsearch_custom_storage_enabled
   notify: restart elasticsearch
 
+- name: Install X-Pack.
+  become: true
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack
+  when: elasticsearch_xpack_enabled
+  notify: restart elasticsearch
+
 - meta: flush_handlers
 
 - name: Ensure Elasticsearch is started and enabled on boot.
