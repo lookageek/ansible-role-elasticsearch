@@ -38,9 +38,22 @@
   when: elasticsearch_custom_storage_enabled
   notify: restart elasticsearch
 
+- name: Check if X-Pack installed.
+  stat:
+    path: /usr/share/elasticsearch/plugins/x-pack
+  register: xpack_dir
+  when: elasticsearch_xpack_enabled
+
+- name: Remove installed X-Pack.
+  become: true
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin remove x-pack
+  when:
+    - elasticsearch_xpack_enabled
+    - xpack_dir.exists
+
 - name: Install X-Pack.
   become: true
-  command: /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack --batch
   when: elasticsearch_xpack_enabled
   notify: restart elasticsearch
 
