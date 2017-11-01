@@ -49,7 +49,7 @@
   command: /usr/share/elasticsearch/bin/elasticsearch-plugin remove x-pack
   when:
     - elasticsearch_xpack_enabled
-    - xpack_dir.exists
+    - xpack_dir.stat.exists
 
 - name: Install X-Pack.
   become: true
