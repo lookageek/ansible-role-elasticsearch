@@ -12,7 +12,7 @@ elasticsearch_enabled_on_boot: yes
 
 elasticsearch_custom_storage_enabled: false
 elasticsearch_custom_storage_path: "/data/es-indexes"
-elasticsearch_lock_heap: "false"
+elasticsearch_lock_heap: "true"
 
 elasticsearch_add_curator: true
 elasticsearch_curator_deb_repo: "5"
