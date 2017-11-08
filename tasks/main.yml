@@ -1,11 +1,7 @@
 ---
-- include: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- include: setup.yml
 
-- include: setup-Debian.yml
-  when: ansible_os_family == 'Debian'
-
-- name: Configure Elasticsearch.
+- name: Configure elasticsearch.yml.
   template:
     src: elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
@@ -14,8 +10,104 @@
     mode: 0750
   notify: restart elasticsearch
 
-- name: Start Elasticsearch.
-  service: name=elasticsearch state=started enabled=yes
+- name: Configure log4j2.properties.
+  template:
+    src: log4j2.properties.j2
+    dest: /etc/elasticsearch/log4j2.properties
+    owner: root
+    group: elasticsearch
+    mode: 0750
+  notify: restart elasticsearch
+
+- name: Configure jvm.options.
+  template:
+    src: jvm.options.j2
+    dest: /etc/elasticsearch/jvm.options
+    owner: root
+    group: elasticsearch
+    mode: 0750
+  notify: restart elasticsearch
+
+- name: Create custom storage directory.
+  file:
+    path: "{{ elasticsearch_custom_storage_path }}"
+    state: directory
+    owner: root
+    group: elasticsearch
+    mode: 0770
+  when: elasticsearch_custom_storage_enabled
+  notify: restart elasticsearch
+
+- name: Check if X-Pack installed.
+  stat:
+    path: /usr/share/elasticsearch/plugins/x-pack
+  register: xpack_dir
+  when: elasticsearch_xpack_enabled
+
+- name: Remove installed X-Pack.
+  become: true
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin remove x-pack
+  when:
+    - elasticsearch_xpack_enabled
+    - xpack_dir.stat.exists
+
+- name: Install X-Pack.
+  become: true
+  command: /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack --batch
+  when: elasticsearch_xpack_enabled
+  notify: restart elasticsearch
+
+- meta: flush_handlers
+
+- name: Ensure Elasticsearch is started and enabled on boot.
+  systemd:
+    name: elasticsearch
+    state: started
+    enabled: "{{ elasticsearch_enabled_on_boot }}"
+    daemon_reload: yes
 
 - name: Make sure Elasticsearch is running before proceeding.
-  wait_for: host={{ elasticsearch_network_host }} port={{ elasticsearch_http_port }} delay=3 timeout=300
+  wait_for:
+    host: "{{ elasticsearch_network_host }}"
+    port: "{{ elasticsearch_http_port }}"
+    delay: 3
+    timeout: 300
+
+- name: Create folder to keep Elasticsearch Curator Configuration.
+  file:
+    path: /home/{{ elasticsearch_user }}/es-curator
+    state: directory
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"
+    mode: 0770
+  when: elasticsearch_add_curator
+
+- name: Add Elasticsearch Curator Configuration.
+  template:
+    src: es-curator-config.yml.j2
+    dest: /home/{{ elasticsearch_user }}/es-curator/config.yml
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"
+    mode: 0770
+  when: elasticsearch_add_curator
+
+- name: Add Curator Actions for deleting old indexes from Elasticsearch.
+  template:
+    src: es-curator-delete-action-file.yml.j2
+    dest: /home/{{ elasticsearch_user }}/es-curator/delete-action-file.yml
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"
+    mode: 0770
+  when:
+    - elasticsearch_add_curator
+    - elasticsearch_delete_indexes
+
+- name: Create cron job to run Elasticsearch Curator.
+  cron:
+    name: Elasticsearch Curator
+    hour: "1"
+    user: "{{ elasticsearch_user }}"
+    job: "/bin/bash -l -c 'curator --config /home/{{ elasticsearch_user }}/es-curator/config.yml /home/{{ elasticsearch_user }}/es-curator/delete-action-file.yml'"
+  when:
+    - elasticsearch_add_curator
+    - elasticsearch_delete_indexes
