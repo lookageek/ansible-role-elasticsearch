@@ -1,5 +1,5 @@
 ---
-- include: setup.yml
+- import_tasks: setup.yml
 
 - name: Configure elasticsearch.yml.
   template:
