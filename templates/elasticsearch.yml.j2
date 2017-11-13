@@ -102,8 +102,10 @@ script.inline: {{ elasticsearch_script_inline }}
 xpack.monitoring.enabled: {{ elasticsearch_xpack_monitoring_enabled }}
 xpack.watcher.enabled: {{ elasticsearch_xpack_watcher_enabled }}
 xpack.security.enabled: {{ elasticsearch_xpack_security_enabled }}
+xpack.ml.enabled: {{ elasticsearch_xpack_ml_enabled }}
 {% if elasticsearch_xpack_security_enabled %}
 xpack.security.authc:
+  accept_default_password: false
   anonymous:
     username: anonymous_user
     roles: superuser

@@ -6,7 +6,7 @@ elasticsearch_http_port: 9200
 elasticsearch_script_inline: "true"
 
 elasticstack_deb_repo: "5.x"
-elasticsearch_version: "5.3.2"
+elasticsearch_version: "5.6.4"
 
 elasticsearch_enabled_on_boot: yes
 
@@ -16,7 +16,7 @@ elasticsearch_lock_heap: "true"
 
 elasticsearch_add_curator: true
 elasticsearch_curator_deb_repo: "5"
-elasticsearch_curator_version: "5.2.0"
+elasticsearch_curator_version: "5.3.0"
 
 elasticsearch_delete_indexes: false
 elasticsearch_delete_indexes_older_than: 15
@@ -31,3 +31,4 @@ elasticsearch_xpack_enabled: true
 elasticsearch_xpack_monitoring_enabled: "true"
 elasticsearch_xpack_watcher_enabled: "false"
 elasticsearch_xpack_security_enabled: "true"
+elasticsearch_xpack_ml_enabled: "false"
