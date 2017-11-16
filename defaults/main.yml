@@ -16,7 +16,7 @@ elasticsearch_lock_heap: "true"
 
 elasticsearch_add_curator: true
 elasticsearch_curator_deb_repo: "5"
-elasticsearch_curator_version: "5.3.0"
+elasticsearch_curator_version: "5.4.0"
 
 elasticsearch_delete_indexes: false
 elasticsearch_delete_indexes_older_than: 15
