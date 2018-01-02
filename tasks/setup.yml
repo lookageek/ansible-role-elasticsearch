@@ -24,6 +24,6 @@
 
 - name: install Elasticsearch Curator.
   apt:
-    pkg: elasticsearch-curator={{ elasticsearch_curator_version }}
+    pkg: elasticsearch-curator
     state: present
   when: elasticsearch_add_curator
