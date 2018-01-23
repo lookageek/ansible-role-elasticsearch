@@ -5,8 +5,8 @@ elasticsearch_network_host: localhost
 elasticsearch_http_port: 9200
 elasticsearch_script_inline: "true"
 
-elasticstack_deb_repo: "5.x"
-elasticsearch_version: "5.6.4"
+elasticstack_deb_repo: "6.x"
+elasticsearch_version: "6.1.2"
 
 elasticsearch_enabled_on_boot: yes
 
@@ -29,5 +29,5 @@ elasticsearch_jvm_heap_size: 4g
 elasticsearch_xpack_enabled: true
 elasticsearch_xpack_monitoring_enabled: "true"
 elasticsearch_xpack_watcher_enabled: "false"
-elasticsearch_xpack_security_enabled: "true"
+elasticsearch_xpack_security_enabled: "false"
 elasticsearch_xpack_ml_enabled: "false"

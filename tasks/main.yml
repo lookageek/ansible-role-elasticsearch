@@ -8,7 +8,6 @@
     owner: root
     group: elasticsearch
     mode: 0750
-  notify: restart elasticsearch
 
 - name: Configure log4j2.properties.
   template:
@@ -17,7 +16,6 @@
     owner: root
     group: elasticsearch
     mode: 0750
-  notify: restart elasticsearch
 
 - name: Configure jvm.options.
   template:
@@ -26,7 +24,6 @@
     owner: root
     group: elasticsearch
     mode: 0750
-  notify: restart elasticsearch
 
 - name: Create custom storage directory.
   file:
@@ -36,7 +33,6 @@
     group: elasticsearch
     mode: 0770
   when: elasticsearch_custom_storage_enabled
-  notify: restart elasticsearch
 
 - name: Check if X-Pack installed.
   stat:
@@ -55,14 +51,20 @@
   become: true
   command: /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack --batch
   when: elasticsearch_xpack_enabled
-  notify: restart elasticsearch
 
-- meta: flush_handlers
+- name: Add mlock configuration to ES systemd.
+  become: true
+  template:
+    src: mlock-es-systemd-override.conf.j2
+    dest: /etc/systemd/system/elasticsearch.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Ensure Elasticsearch is started and enabled on boot.
   systemd:
     name: elasticsearch
-    state: started
+    state: restarted
     enabled: "{{ elasticsearch_enabled_on_boot }}"
     daemon_reload: yes
 
