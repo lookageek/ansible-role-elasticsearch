@@ -3,7 +3,6 @@ elasticsearch_user: ubuntu
 
 elasticsearch_network_host: localhost
 elasticsearch_http_port: 9200
-elasticsearch_script_inline: "true"
 
 elasticstack_deb_repo: "6.x"
 elasticsearch_version: "6.1.2"
